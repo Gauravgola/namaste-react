@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Namaste React by Akshay Saini",
   "scripts": {
+    "start":"parcel react.html",
+    "build":"parcel build react.html",
     "test": "jest"
   },
   "repository": {
