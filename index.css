@@ -32,8 +32,13 @@
     margin-bottom: 20px;
 }
 
-.search-bar {
-    margin:20px;
+.filter {
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+button.filter-btn {
+    cursor: pointer;
 }
 
 .res-image{
