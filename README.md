@@ -29,3 +29,8 @@
      -Reference
      -Contact
  **/
+
+* Shortcut Keys
+for beautify
+Alt + shift + F
+ 

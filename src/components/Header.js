@@ -1,6 +1,17 @@
 import { LOGO_URL } from "../utils/constants";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
+
+    // let btnName = "login"; before we are using normal variable
+    const [btnNameReact, setBtnNameReact] = useState("login");
+    console.log("Header Rendered");
+
+    useEffect(() => {
+      console.log("useEffect Called");
+    },[]);
+
     return (
       <div className="header">
         <div className="logo-container">
@@ -12,10 +23,18 @@ export const Header = () => {
         </div>
         <div className="nav-items">
           <ul>
-            <li>Home</li>
-            <li>About Us</li>
-            <li>Contact Us</li>
-            <li>Cart</li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/contact">Contact Us</Link></li>
+            <li><Link to="/cart">Cart</Link></li>
+            <button 
+              className="login" 
+              onClick={() => {
+                btnNameReact == "login" ? setBtnNameReact("logout") :setBtnNameReact("login");
+              }}
+            >
+              {btnNameReact}
+            </button>
           </ul>
         </div>
       </div>
