@@ -81,3 +81,10 @@ button.filter-btn {
 .search{
     margin-right: 20px;
 }
+
+
+.user-card{
+    padding:10px;
+    border:1px solid black;
+    margin-bottom: 10px;
+}
