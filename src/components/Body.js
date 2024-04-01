@@ -1,15 +1,21 @@
 import RestaurantCard from "./RestaurantCard";
 // import resObj from "../utils/data";
-import { useEffect, useState } from "react";
+import {useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import { RESLIST_API } from "../utils/constants";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   //Local State Variable - Super Powerful variable
 
+
+
   const [listOfRestaurant, setListOfRestaurant] = useState([]);
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState();
+
+  // const {listOfRestaurant, filteredRestaurant} = useBody(RESLIST_API);
 
   // console.log("Body Rendered");
 
@@ -59,17 +65,19 @@ const Body = () => {
   //   },
   // ];
 
+  
+// --------------------------------------Data fetching---------------------------------------------------------
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7192604&lng=77.173582&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
+    const data = await fetch(RESLIST_API);
     const json = await data.json();
+
     // console.log("call",json);
     // This is called optional chaining
+
     setListOfRestaurant(
       json.data.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
@@ -77,7 +85,20 @@ const Body = () => {
       json.data.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
+
   
+  // ----------------------------------data fetching closed here-----------------------------------
+  
+  const onlineStatus = useOnlineStatus();
+
+  if(onlineStatus == false)
+   return (
+      <h1>
+        Looks like you are offline !!! Please check your internet  connection;
+      </h1>
+   );
+
+
   // This is called conditional rendering
   // if (listOfRestaurant.length == 0){
   //   return <Shimmer />;
