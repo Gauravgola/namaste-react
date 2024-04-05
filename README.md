@@ -33,4 +33,14 @@
 * Shortcut Keys
 for beautify
 Alt + shift + F
+
+
+# Redux ToolKit
+
+- install @reduxjs/toolkit and react-redux 
+- Build our store
+- Connect our store to our App 
+- create Slice(cartSlice)
+- dispatch(action)
+- read the data using Selector
  

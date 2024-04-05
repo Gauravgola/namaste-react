@@ -1,10 +1,12 @@
 import RestaurantCard from "./RestaurantCard";
 // import resObj from "../utils/data";
-import {useState, useEffect } from "react";
+import {useState, useEffect, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { RESLIST_API } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import { withPromotedlabel } from "./RestaurantCard";
+import UserContext from "../utils/userContext";
 
 const Body = () => {
   //Local State Variable - Super Powerful variable
@@ -15,9 +17,11 @@ const Body = () => {
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const [searchText, setSearchText] = useState();
 
+  const RestaurantCardPromoted = withPromotedlabel(RestaurantCard);
+
   // const {listOfRestaurant, filteredRestaurant} = useBody(RESLIST_API);
 
-  // console.log("Body Rendered");
+  console.log("Body Rendered",listOfRestaurant);
 
   // Normal Js Variable
   // let mockData = [
@@ -98,6 +102,8 @@ const Body = () => {
       </h1>
    );
 
+   const { loggedInUser, setUserName } = useContext(UserContext);
+
 
   // This is called conditional rendering
   // if (listOfRestaurant.length == 0){
@@ -107,17 +113,17 @@ const Body = () => {
   return listOfRestaurant.length == 0 ? ( <Shimmer /> 
   ) : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div className="filter flex">
+        <div className="search m-4 p-4">
           <input 
             type="text" 
-            className="search-box" 
+            className="search-box border border-solid border-black mr-4" 
             value={searchText} 
             onChange={(e) => {
               setSearchText(e.target.value);
             }} 
           />
-          <button 
+          <button className="bg-green-100 px-3 py-1 rounded-md"
             onClick={() => {
             //filter the restaurant cards and update the UI
             // searchText
@@ -135,24 +141,48 @@ const Body = () => {
             Search
           </button>
         </div>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            const filteredList = listOfRestaurant.filter(
-              (res) => res.info.avgRating > 4.2 
-            );
-            setListOfRestaurant(filteredList);
-          }}
-        >
-          Top Rated Restaurants
-        </button> 
+        <div className="m-3 p-3 flex items-center">
+          <button
+            className="filter-btn px-3 py-1 bg-gray-100 rounded-md"
+            onClick={() => {
+              const filteredList = listOfRestaurant.filter(
+                (res) => res.info.avgRating > 4.2 
+              );
+              setListOfRestaurant(filteredList);
+            }}
+          >
+            Top Rated Restaurants
+          </button>
+        </div> 
+
+        <div className="m-3 p-3 flex items-center">
+          <label className="mr-2">User Name</label>
+          <input className="border border-black"
+           value={loggedInUser}
+           onChange={(e) => setUserName(e.target.value)}/>
+        </div> 
+
       </div> 
-      <div className="restaurant-container">
+      <div className="restaurant-container flex flex-wrap">
         {/* <RestaurantCard resData={resObj[0]} />         */}
         {filteredRestaurant.map((restaurant) => {
           console.log("Nnnn",restaurant);
           return (
-            <Link key={restaurant.info?.id} to={"/restaurant/" + restaurant.info?.id}><RestaurantCard  resData={restaurant} /> </Link>
+            <Link 
+              key={restaurant.info?.id} 
+              to={"/restaurant/" + restaurant.info?.id}>
+
+{/* -----------------------Ye promoted Restaurant ke liye hai------------------------------------ */}
+                {
+                  restaurant.info.promoted ? (
+                  <RestaurantCardPromoted resData={restaurant} />
+                  ) :
+                  (
+                  <RestaurantCard  resData={restaurant} /> 
+                  )
+                }
+{/*---------------------------------------------------------------------------------------------- */}
+            </Link>
     
           );
         })}
